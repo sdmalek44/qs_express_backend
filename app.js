@@ -132,6 +132,41 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
 
 })
 
+app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
+  var foodObj;
+  var mealObj;
+  return database('foods').where('id', request.params.id).first()
+    .then((food) => {
+      foodObj = food;
+      return database('meals').where('id', request.params.meal_id).first()
+    })
+    .then((meal) => {
+      mealObj = meal;
+    })
+    .then(() => {
+      return database('meal_foods').where({
+        food_id: request.params.id,
+        meal_id: request.params.meal_id
+      })
+    })
+    .then((mealFoods) => {
+      if (foodObj && mealObj) {
+        return database('meal_foods').where('id', mealFoods[0].id).del()
+      }
+    })
+    .then((result) => {
+      if (result){
+        response.status(200).json({message: `Successfully removed ${foodObj.name} from ${mealObj.name}`})
+      } else {
+        response.status(404).json({status: 'Unsuccessful'})
+      }
+
+    })
+    .catch((error) => {
+      response.status(500).json({ error })
+    })
+})
+
 function formatMeals(meals){
   var formattedData = []
   var meal_ids = []
