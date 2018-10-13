@@ -58,6 +58,29 @@ app.post('/api/v1/foods', (request, response) => {
     })
 })
 
+app.patch('/api/v1/foods/:id', (request, response) => {
+  if (request.body.food.name && Number.isInteger(parseInt(request.body.food.calories))){
+    return database('foods').where('id', request.params.id).update({
+      name: request.body.food.name,
+      calories: request.body.food.calories
+    })
+    .then((result) => {
+      if (result){
+        return database('foods').where('id', request.params.id).first()
+      }
+    })
+    .then((food) => {
+      if (food){
+        response.status(200).json(food)
+      } else {
+        response.status(200).json({status: 'Food Not Found'})
+      }
+    })
+  } else {
+    response.status(404).json({status: 'Incorrect parameters'})
+  }
+})
+
 app.delete('/api/v1/foods/:id', (request, response) => {
   database('foods').where('id', request.params.id).del()
     .then((food) => {
