@@ -1,6 +1,5 @@
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
       return knex('foods').del()
 
         .then(() => {
@@ -15,6 +14,5 @@ exports.seed = function(knex, Promise) {
             ], 'id')
           ])
         })
-        .then(()=> console.log('Seeding Complete!'))
         .catch(error => console.log(`Error Seeding Data: ${error}`))
 };

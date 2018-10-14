@@ -46,19 +46,23 @@ app.post('/api/v1/foods', (request, response) => {
   var error = {error: 'Expected format: { food: { name: <string>, calories: <string> }}'}
   if (!data['food']){
     return response.status(400).send(error)
-  } else if (!data.food['name'] || !data.food['name']){
+  } else if (!data.food['name'] || !data.food['calories']){
     return response.status(400).send(error)
   }
   database('foods').insert(data.food, 'id')
+    .then((food_id) => {
+      return database('foods').where('id', food_id[0]).first()
+    })
     .then((food) => {
-      response.status(200).json({ id: food } )
+      response.status(200).json(food)
     })
     .catch((error) => {
       response.status(500).json({ error })
     })
-})
+});
 
 app.patch('/api/v1/foods/:id', (request, response) => {
+  var error = {error: 'Expected format: { food: { name: <string>, calories: <string> }}'}
   if (request.body.food.name && Number.isInteger(parseInt(request.body.food.calories))){
     return database('foods').where('id', request.params.id).update({
       name: request.body.food.name,
@@ -73,11 +77,11 @@ app.patch('/api/v1/foods/:id', (request, response) => {
       if (food){
         response.status(200).json(food)
       } else {
-        response.status(200).json({status: 'Food Not Found'})
+        response.status(404).json({status: 'Food Not Found'})
       }
     })
   } else {
-    response.status(404).json({status: 'Incorrect parameters'})
+    response.status(400).json(error)
   }
 })
 
@@ -215,3 +219,5 @@ function formatMeals(meals){
   }
   return formattedData;
 }
+
+module.exports = app;
