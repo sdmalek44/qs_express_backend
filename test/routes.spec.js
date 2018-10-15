@@ -189,5 +189,37 @@ describe('API Routes', () => {
         })
       })
     })
+    it('should get a 404 if food not found', (done)=> {
+      chai.request(server)
+        .delete('/api/v1/foods/7')
+        .end((err,response) => {
+          response.should.have.status(404);
+          done();
+        })
+    })
+  })
+
+  describe('GET /api/v1/meals', (done) => {
+    it('can see all meals and associated foods', (done) => {
+      chai.request(server)
+        .get('/api/v1/meals')
+        .end((err, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array')
+          response.body.length.should.equal(4)
+          response.body[3].id.should.equal(4)
+          response.body[3].name.should.equal('Dinner')
+          response.body[3].foods.should.be.a('array')
+          response.body[3].foods.length.should.equal(3)
+          response.body[3].foods[0].should.have.property('id')
+          response.body[3].foods[0].id.should.be.a('number')
+          response.body[3].foods[0].should.have.property('name')
+          response.body[3].foods[0].name.should.be.a('string')
+          response.body[3].foods[0].should.have.property('calories')
+          response.body[3].foods[0].calories.should.be.a('number')
+          done()
+        })
+    })
   })
 })
