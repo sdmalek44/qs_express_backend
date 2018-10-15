@@ -306,5 +306,14 @@ describe('API Routes', () => {
         })
 
     })
+    it('returns 404 if meal or food does not exist', (done) => {
+      chai.request(server)
+        .delete('/api/v1/meals/45/foods/3')
+        .end((err, response) => {
+          response.should.have.status(404)
+          response.body.status.should.equal('Unsuccessful')
+          done()
+        })
+    })
   })
 })
