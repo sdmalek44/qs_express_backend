@@ -222,4 +222,89 @@ describe('API Routes', () => {
         })
     })
   })
+  describe('GET /api/v1/meals/:meal_id/foods', (done) => {
+    it('should get a specific meal and its foods', (done) => {
+      chai.request(server)
+      .get('/api/v1/meals/2/foods')
+      .end((err, response) => {
+        response.should.have.status(200)
+        response.should.be.json;
+        response.body.should.be.a('object')
+        response.body.should.have.property('id')
+        response.body.should.have.property('name')
+        response.body.should.have.property('foods')
+        response.body.foods.should.be.a('array')
+        response.body.foods[0].should.have.property('id')
+        response.body.foods[0].should.have.property('name')
+        response.body.foods[0].should.have.property('calories')
+        done()
+      })
+    })
+    it('should return a 404 status if meal non-existant', (done)=> {
+      chai.request(server)
+      .get('/api/v1/meals/34/foods')
+      .end((err, response) => {
+        response.should.have.status(404)
+        done()
+      })
+    })
+  })
+
+  describe('POST /api/v1/meals/:meal_id/foods/:id', (done) => {
+    it('adds a food to a meal', (done) => {
+      chai.request(server)
+        .get('/api/v1/meals/1/foods')
+        .end((err, response) => {
+          response.body.foods.length.should.equal(0)
+        chai.request(server)
+          .post('/api/v1/meals/1/foods/1')
+          .end((err, response) => {
+            response.should.have.status(200);
+            response.should.be.json;
+            response.body.should.be.a('object')
+            response.body.should.have.property('message')
+            response.body.message.should.be.a('string')
+            chai.request(server)
+              .get('/api/v1/meals/1/foods')
+              .end((err, response) => {
+                response.body.foods.length.should.equal(1)
+                done()
+              })
+          })
+      })
+    })
+    it('returns 404 if food or meal not found', (done) => {
+      chai.request(server)
+        .post('/api/v1/meals/1/foods/45')
+        .end((err, response) => {
+          response.should.have.status(404);
+          done();
+        })
+    })
+  })
+
+  describe('DELETE /api/v1/meals/:meal_id/foods/:id', (done) => {
+    it('removes a food from a meal', (done) => {
+      chai.request(server)
+        .get('/api/v1/meals/2/foods')
+        .end((err, response) => {
+          response.body.foods.length.should.equal(1)
+          response.body.foods[0].id.should.equal(1)
+          chai.request(server)
+            .delete('/api/v1/meals/2/foods/1')
+            .end((err, response) => {
+              response.should.have.status(200)
+              response.body.should.have.property('message')
+              response.body.message.should.be.a('string')
+              chai.request(server)
+                .get('/api/v1/meals/2/foods')
+                .end((err, response) => {
+                  response.body.foods.length.should.equal(0)
+                  done()
+                })
+            })
+        })
+
+    })
+  })
 })
