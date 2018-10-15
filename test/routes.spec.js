@@ -45,7 +45,7 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
-  describe('Get /api/v1/foods', (done)=> {
+  describe('GET /api/v1/foods', (done)=> {
     it('should return all of the foods', done => {
       chai.request(server)
       .get('/api/v1/foods')
@@ -61,7 +61,7 @@ describe('API Routes', () => {
       })
     })
   })
-  describe('Get /api/v1/foods/:id', (done)=> {
+  describe('GET /api/v1/foods/:id', (done)=> {
     it('should return one of the foods', done => {
       chai.request(server)
       .get(`/api/v1/foods/1`)
@@ -168,4 +168,26 @@ describe('API Routes', () => {
     })
   })
 
-});
+  describe('DELETE /api/v1/foods', (done) => {
+    it('should delete a food', (done) => {
+      chai.request(server)
+      .get('/api/v1/foods/5')
+      .end((err, response) => {
+        response.body.id.should.equal(5)
+        response.body.name.should.equal('Spam')
+        response.body.calories.should.equal(200)
+        chai.request(server)
+        .delete('/api/v1/foods/5')
+        .end((err, response) => {
+          response.should.have.status(204);
+          chai.request(server)
+          .get('/api/v1/foods/5')
+          .end((err, response) => {
+            response.should.have.status(404)
+            done()
+          })
+        })
+      })
+    })
+  })
+})

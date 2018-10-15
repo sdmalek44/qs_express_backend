@@ -44,21 +44,20 @@ app.get('/api/v1/foods/:id', (request, response) => {
 app.post('/api/v1/foods', (request, response) => {
   const data = request.body
   var error = {error: 'Expected format: { food: { name: <string>, calories: <string> }}'}
-  if (!data['food']){
-    return response.status(400).send(error)
-  } else if (!data.food['name'] || !data.food['calories']){
-    return response.status(400).send(error)
-  }
-  database('foods').insert(data.food, 'id')
+  if (data.food.name && Number.isInteger(parseInt(data.food.calories))){
+    database('foods').insert(data.food, 'id')
     .then((food_id) => {
       return database('foods').where('id', food_id[0]).first()
     })
     .then((food) => {
       response.status(200).json(food)
     })
-    .catch((error) => {
-      response.status(500).json({ error })
+    .catch((err) => {
+      response.status(500).json({ err })
     })
+  } else {
+    response.status(400).json(error)
+  }
 });
 
 app.patch('/api/v1/foods/:id', (request, response) => {
@@ -86,14 +85,16 @@ app.patch('/api/v1/foods/:id', (request, response) => {
 })
 
 app.delete('/api/v1/foods/:id', (request, response) => {
-  database('foods').where('id', request.params.id).del()
-    .then((food) => {
-      var status = 200;
-      if (food === 0){ status = 404}
-      response.status(status).json({id: food})
+  return database('foods').where('id', request.params.id).del()
+    .then((result) => {
+      if (parseInt(result)){
+        response.status(204).json({id: parseInt(result)})
+      } else {
+        response.status(404).json({status: "Food Not Found"})
+      }
     })
-    .catch((error) => {
-      response.status(500).json({ error })
+    .catch((err) => {
+      response.status(500).json({ error: err })
     })
 })
 
