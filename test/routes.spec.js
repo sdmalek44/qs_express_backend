@@ -7,6 +7,7 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../knexfile.js')[environment]
 const database = require('knex')(configuration)
 
+
 beforeEach((done) => {
   database.migrate.rollback()
   .then(() => done())
@@ -31,10 +32,10 @@ beforeEach((done) => {
      });
  });
 
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 
 describe('Client Routes', () => {
-  it('should return a 404 for a route that doesnt exist', done => {
+  it('should return a 404 for a route that doesnt exist', (done) => {
     chai.request(server)
     .get('/api/v1/foodsy')
     .end((err, response) => {
