@@ -6,6 +6,7 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile.js')[environment]
 const database = require('knex')(configuration)
 const FoodsController = require('./lib/controllers/foods_controller.js')
+const MealsController = require('./lib/controllers/meals_controller.js')
 const Food = require('./lib/models/food.js')
 
 
@@ -32,35 +33,9 @@ app.patch('/api/v1/foods/:id', FoodsController.update);
 
 app.delete('/api/v1/foods/:id', FoodsController.delete_food);
 
-app.get('/api/v1/meals', (request, response) => {
-  database('meals')
-    .leftJoin('meal_foods', 'meals.id', '=', 'meal_foods.meal_id')
-    .leftJoin('foods', 'meal_foods.food_id', '=', 'foods.id')
-    .select('meals.id', 'meals.name', 'meal_foods.food_id', 'foods.name as food_name', 'foods.calories')
-    .orderBy('meals.id')
-    .then((meals) => {
-      response.status(200).json(formatMeals(meals)) })
-    .catch((error) => {
-      response.status(500).json({ error }) })
-})
+app.get('/api/v1/meals', MealsController.index);
 
-app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
-  database('meals')
-    .leftJoin('meal_foods', 'meals.id', '=', 'meal_foods.meal_id')
-    .leftJoin('foods', 'meal_foods.food_id', '=', 'foods.id')
-    .where('meals.id', request.params.meal_id)
-    .select('meals.id', 'meals.name', 'meal_foods.food_id', 'foods.name as food_name', 'foods.calories')
-    .then((meals) => {
-      var status = 404;
-      var body = {status: 404, error: 'Not Found'}
-      if (meals.length !== 0){
-        status = 200
-        body = formatMeals(meals)[0]
-      }
-      response.status(status).json(body) })
-    .catch((error) => {
-      response.status(500).json({ error }) })
-})
+app.get('/api/v1/meals/:meal_id/foods', MealsController.find_meal);
 
 app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
     var mealObj;
