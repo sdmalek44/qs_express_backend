@@ -26,22 +26,7 @@ app.get('/api/v1/foods', FoodsController.index)
 
 app.get('/api/v1/foods/:id', FoodsController.show);
 
-app.post('/api/v1/foods', (request, response) => {
-  Food.create(request.body)
-  .then((food_id) => {
-    if (food_id[0]) {
-      return database('foods').select().where('id', food_id[0]).first()
-    } else {
-      response.status(400).json({error: 'Expected format: { food: { name: <string>, calories: <string> }}'})
-    }
-  })
-  .then((food) => {
-    response.status(200).json(food)
-  })
-  .catch((err) => {
-    response.status(500).json({ err })
-  })
-});
+app.post('/api/v1/foods', FoodsController.create);
 
 app.patch('/api/v1/foods/:id', (request, response) => {
   var error = {error: 'Expected format: { food: { name: <string>, calories: <string> }}'}
