@@ -28,43 +28,9 @@ app.get('/api/v1/foods/:id', FoodsController.show);
 
 app.post('/api/v1/foods', FoodsController.create);
 
-app.patch('/api/v1/foods/:id', (request, response) => {
-  var error = {error: 'Expected format: { food: { name: <string>, calories: <string> }}'}
-  if (request.body.food.name && Number.isInteger(parseInt(request.body.food.calories))){
-    return database('foods').where('id', request.params.id).update({
-      name: request.body.food.name,
-      calories: request.body.food.calories
-    })
-    .then((result) => {
-      if (result){
-        return database('foods').where('id', request.params.id).first()
-      }
-    })
-    .then((food) => {
-      if (food){
-        response.status(200).json(food)
-      } else {
-        response.status(404).json({status: 'Food Not Found'})
-      }
-    })
-  } else {
-    response.status(400).json(error)
-  }
-})
+app.patch('/api/v1/foods/:id', FoodsController.update);
 
-app.delete('/api/v1/foods/:id', (request, response) => {
-  return database('foods').where('id', request.params.id).del()
-    .then((result) => {
-      if (parseInt(result)){
-        response.status(204).json({id: parseInt(result)})
-      } else {
-        response.status(404).json({status: "Food Not Found"})
-      }
-    })
-    .catch((err) => {
-      response.status(500).json({ error: err })
-    })
-})
+app.delete('/api/v1/foods/:id', FoodsController.delete_food);
 
 app.get('/api/v1/meals', (request, response) => {
   database('meals')
