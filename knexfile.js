@@ -12,7 +12,15 @@ module.exports = {
       directory: './db/seeds/dev'
     },
     useNullAsDefault: true
-  }
+  },
 
+  production: {
+    client: 'postgresql',
+    connection: {
+      database: 'qs_express_backend',
+      user:     'stephen',
+      password: '1234'
+    }
+  }
 
 };
