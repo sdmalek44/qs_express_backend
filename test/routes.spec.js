@@ -212,7 +212,7 @@ describe('API Routes', () => {
           response.body[3].id.should.equal(4)
           response.body[3].name.should.equal('Dinner')
           response.body[3].foods.should.be.a('array')
-          response.body[3].foods.length.should.equal(3)
+          response.body[3].foods.length.should.equal(9)
           response.body[3].foods[0].should.have.property('id')
           response.body[3].foods[0].id.should.be.a('number')
           response.body[3].foods[0].should.have.property('name')
@@ -289,7 +289,7 @@ describe('API Routes', () => {
       chai.request(server)
         .get('/api/v1/meals/2/foods')
         .end((err, response) => {
-          response.body.foods.length.should.equal(1)
+          response.body.foods.length.should.equal(3)
           response.body.foods[0].id.should.equal(1)
           chai.request(server)
             .delete('/api/v1/meals/2/foods/1')
@@ -300,7 +300,7 @@ describe('API Routes', () => {
               chai.request(server)
                 .get('/api/v1/meals/2/foods')
                 .end((err, response) => {
-                  response.body.foods.length.should.equal(0)
+                  response.body.foods.length.should.equal(2)
                   done()
                 })
             })
