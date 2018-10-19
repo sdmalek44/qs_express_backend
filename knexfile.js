@@ -24,6 +24,22 @@ module.exports = {
       directory: './db/seeds/dev'
     },
     useNullAsDefault: true
+  },
+
+  test: {
+    client: 'postgresql',
+    connection: {
+      user: 'stephen',
+      password: '1234',
+      database: 'qs_express_test'
+    },
+    migrations: {
+      directory: './db/migrations'
+    },
+    seeds: {
+      directory: './db/seeds/dev'
+    },
+    useNullAsDefault: true
   }
 
 };
