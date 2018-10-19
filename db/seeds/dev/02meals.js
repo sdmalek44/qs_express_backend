@@ -8,5 +8,5 @@ exports.seed = function(knex, Promise) {
         {name: 'Snack' },
         {name: 'Dinner' }
       ], 'id');
-    });
-};
+    })
+  .catch(error => console.log(`Error seeding meals data: ${error}`))};

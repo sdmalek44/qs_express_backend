@@ -2,10 +2,10 @@
   "name": "qs_express_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "test": "mocha",
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +14,10 @@
     "express": "^4.16.4",
     "knex": "^0.15.2",
     "pg": "^7.5.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "mocha": "^5.2.0"
   }
 }
