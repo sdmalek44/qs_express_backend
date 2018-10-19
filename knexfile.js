@@ -20,7 +20,14 @@ module.exports = {
       database: 'qs_express_backend',
       user:     'stephen',
       password: '1234'
-    }
+    },
+    migrations: {
+      directory: './db/migrations'
+    },
+    seeds: {
+      directory: './db/seeds/dev'
+    },
+    useNullAsDefault: true
   }
 
 };
