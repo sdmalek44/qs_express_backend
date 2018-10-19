@@ -2,6 +2,10 @@
 # Quantified Self API  
 An application for tracking foods, and calories consumed at each meal. It is built using Node.js, Express, and Knex. It is tested using Mocha, and Chai. 
 
+## Deployed Link
+https://quant-self-api.herokuapp.com/
+(see endpoints below)
+
 ## Running and testing it locally
 (Enter everything after the `$` in your terminal/console)  
 
@@ -18,6 +22,7 @@ An application for tracking foods, and calories consumed at each meal. It is bui
   ```
   $ psql 
   $ create database qs_express_backend;
+  $ create database qs_express_test;
   $ \q
   ```
   
