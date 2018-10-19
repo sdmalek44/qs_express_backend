@@ -2,6 +2,43 @@
 # Quantified Self API  
 An application for tracking foods, and calories consumed at each meal. It is built using Node.js, Express, and Knex. It is tested using Mocha, and Chai. 
 
+## Running and testing it locally
+(Enter everything after the `$` in your terminal/console)  
+
+- Clone the repository
+  ```
+  $ git clone https://github.com/sdmalek44/quantified_self_be.git
+  $ cd quantified_self_be
+  ```
+- In the root directory of the repository, run:
+  ```
+  $ npm install
+  ```
+- Create PostgreSQL Database
+  ```
+  $ psql 
+  $ create database qs_express_backend;
+  $ \q
+  ```
+  
+- Migrate and Seed Database:
+  ```
+  $ knex migrate:latest
+  $ knex seed:run
+  ```
+### Running the server
+- From the terminal, run:
+  ```
+  $ node server.js
+  ```
+- visit http://localhost:3000 for root
+- see below for endpoints
+
+### Running the tests
+  ```
+  $ mocha --exit
+  ```
+  
 ## Endpoints  
 ### Food Endpoints:   
 
@@ -111,45 +148,4 @@ Removes the food with :id from the meal with :meal_id. If meal/food cannot be fo
     "message": "Successfully removed FOODNAME to MEALNAME"
 }
 ```
-### Favorites Endpoints:  
-#### GET /api/v1/favorite_foods  
 
-Retrieves data on the foods which were eaten most frequently. Includes 3 highest timesEaten values if greater than 1.  
-```
-[
-  {
-    "timesEaten": 4,
-    "foods":
-      [
-        {
-          "name": "Banana",
-          "calories": 200,
-          // since Bananas were eaten 4 times but only two meals
-          // are in this array, this would mean that Banana was eaten
-          // more than once in at least each meal
-          "mealsWhenEaten": ["Breakfast", "Dinner"]
-        },
-  },
-  "timesEaten": 3,
-  "foods":
-    [
-      {
-        "name": "Strawberries",
-        "calories": 200,
-        "mealsWhenEaten": ["Breakfast", "Lunch", "Dinner"]
-      },
-      {
-        "name": "Almonds"
-        "calories": 800,
-        // Since almonds were eaten three times but snacks is the
-        // only meal in this array, this would mean that almonds were
-        // only eaten as snacks, but three times.
-        "mealsWhenEaten": ["Snacks"]
-      }
-    ]
-    ]
-  }
-  // `"timesEaten": 2` is not listed here because in this example,
-  // no snack was eaten exactly two times.
-]
-```
