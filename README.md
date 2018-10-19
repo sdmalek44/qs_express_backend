@@ -9,35 +9,35 @@ https://quant-self-api.herokuapp.com/
 ## Running and testing it locally
 (Enter everything after the `$` in your terminal/console)  
 
-- Clone the repository
+Clone the repository:
   ```
   $ git clone https://github.com/sdmalek44/quantified_self_be.git
   $ cd quantified_self_be
   ```
-- In the root directory of the repository, run:
+In the root directory of the repository, run:
   ```
   $ npm install
   ```
-- Create PostgreSQL Database
+Create PostgreSQL Database:
   ```
   $ psql 
   $ create database qs_express_backend;
   $ create database qs_express_test;
   $ \q
   ```
-  
-- Migrate and Seed Database:
+ 
+Migrate and Seed Database:
   ```
   $ knex migrate:latest
   $ knex seed:run
   ```
 ### Running the server
-- From the terminal, run:
+From the terminal, run:
   ```
   $ node server.js
   ```
-- visit http://localhost:3000 for root
-- see below for endpoints
+visit http://localhost:3000 
+(see below for endpoints)
 
 ### Running the tests
   ```
