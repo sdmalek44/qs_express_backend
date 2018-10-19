@@ -17,7 +17,7 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'qs_express_backend',
+      database: 'postgresql-tetrahedral-35190',
       user:     'stephen',
       password: '1234'
     },
