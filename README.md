@@ -1,5 +1,5 @@
 
-# Quantified Self API  
+# Quantified Self Back-End Express API  
 An application for tracking foods, and calories consumed at each meal. It is built using Node.js, Express, and Knex. It is tested using Mocha, and Chai. 
 
 ## Deployed Link
